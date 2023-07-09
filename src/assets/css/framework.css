@@ -1,0 +1,142 @@
+/* This file is for custom antd framework css */
+/*
+
+#222629 blackish : background
+#00b4d8 blue : main
+#03045e dark blue: secondary
+
+
+*/
+
+/* placeholder text coor */
+::placeholder{
+    color: #03045e !important;
+}
+
+/* ant menu (nav bar) */
+
+.ant-menu-item::after, .ant-menu-submenu::after {
+    border: none !important;
+}
+.ant-menu-submenu-title{
+    color: #00b4d8 !important;
+}
+
+.ant-menu-submenu-title:hover{
+    color: #0077b6 !important;
+}
+
+/* the submenu that opens up upon clicking */
+.ant-menu {
+    color: #00b4d8 !important;
+    background-color: #222629 !important;
+    border: 1px solid #0077b6;
+    border-radius: 10px !important;
+    font-size: large !important;
+    
+}
+
+.ant-menu-item:active, .ant-menu-item:hover{
+    color: #0077b6 !important;
+    background-color: transparent !important ;
+}
+
+.ant-menu-item-selected, .ant-menu-submenu-title{
+    color: #00b4d8 !important;
+    background-color: transparent !important;
+}
+
+.ant-menu-submenu-arrow {
+    color: #00b4d8 !important;
+}
+
+/* antd button primary type; i.e. type='primary' */
+.ant-btn-primary {
+    background-color: transparent !important;
+    border: 1px solid #00b4d8 !important;
+    color: #00b4d8 !important;
+  }
+
+.ant-btn-primary:hover{
+    background-color: #03045e !important;
+}
+
+.ant-btn-primary:active{
+    background-color: #0077b6 !important;
+}
+.ant-btn-primary:disabled{
+    background-color: #474B4F !important;
+}
+
+/* antd modal */
+.ant-modal-content{
+    background-color: #222629 !important;
+    border-radius: 0px !important;
+    color: #00b4d8 !important;
+    border: 2px solid #222629 !important;
+    box-shadow: 0 0 5px #00b4d8 !important;
+}
+.ant-modal-header{
+    background-color: #222629 !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    /* border-bottom-color: #03045e !important; */
+    border-bottom: none !important;
+}
+.ant-modal-footer{
+    border-top: none !important;
+}
+
+.ant-modal-close {
+    color: #00b4d8 !important;
+}
+.ant-modal-close:hover{
+    color: #0077b6 !important;
+}
+.ant-modal-title {
+    color: #00b4d8 !important;
+    font-weight: 700 !important;
+    /* text-align: center; */
+}
+/* antd input */
+.ant-input, .ant-input-affix-wrapper{
+    background-color: transparent !important;
+    color: #00b4d8 !important;
+}
+.ant-input-prefix{
+    color: #00b4d8 !important;
+}
+
+.class-name-custom-ant-input{
+    width: 100%;
+    border-radius: 10px !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    border-color: #00b4d8 !important;
+}
+
+/* notification */
+.ant-notification-notice{
+    background-color: #222629 !important;
+    border: 1px solid #00b4d8;
+    border-radius: 10px !important;
+}
+.ant-notification-notice-icon, .ant-notification-notice-description{
+    color: #00b4d8 !important;
+}
+.ant-notification-notice-message{
+    color: #00b4d8 !important;
+    font-weight: 700;
+}
+
+/* popconfirmation */
+.ant-popover-inner-content, .ant-popover-arrow-content::before {
+    background-color: #222629 !important;
+    border: 1px solid #03045e !important ;
+}
+.ant-popover-message{
+    color: #00b4d8 !important;
+}
+.ant-popover-buttons{
+    width: max-content;    
+}
