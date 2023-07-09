@@ -140,3 +140,17 @@
 .ant-popover-buttons{
     width: max-content;    
 }
+
+/* Drawer */
+.ant-drawer-close {
+    position: absolute;
+    /* top: 0; */
+    right: 0;
+    background-color: #222629 !important;
+  }
+.ant-drawer-header{
+    background-color: #222629 !important;
+}
+.ant-drawer-body{
+    background-color: #222629 !important;
+}
