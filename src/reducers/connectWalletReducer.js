@@ -1,7 +1,6 @@
 import Web3 from "web3";
 import FarmMasterChef from "../truffle_abis/FarmMasterChef.json";
 
-// config for chain ids
 const chainIds = {
   goerli: "0x5",
   // goerli: "0x539", // temporarily change to ganache
@@ -15,7 +14,6 @@ const initialState = {
   web3: {},
 };
 
-// actions here
 const connectWalletAction = (payload) => ({
   type: "CONNECTWALLET",
   payload,
@@ -42,18 +40,14 @@ const changeChainConnectWalletReducer = (payload) => ({
 
 const attemptToConnectWallet = (chain) => {
   return async (dispatch) => {
-    ///
     try {
-      // Request account access if needed
       await window.ethereum.enable();
-      // Acccounts now exposed
       const web3 = new Web3(window.ethereum);
       const accounts = await web3.eth.getAccounts();
       const networkId = await web3.eth.net.getId(); // int type
 
       let onCorrectChain = true;
       // if network id not equal to the goerli, attempt to change chain
-      // if connect to ganache instead, think just hardcode chainIds[chain] to that of ganache instead
       if (web3.utils.toHex(networkId) !== chainIds[chain]) {
         // attempt to connect
         onCorrectChain = await attemptToChangeChain(chain);
@@ -120,7 +114,6 @@ const attemptToChangeChain = async (chain) => {
   }
 };
 
-// reducer here
 const connectWalletReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CONNECTWALLET":

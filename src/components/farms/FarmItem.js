@@ -140,7 +140,7 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
           <div>
             <Button
               type="primary"
-              disabled={isLoading || !userAddress || rewards === "0"}
+              disabled={isLoading || rewards === "0"}
               onClick={onClaimHandler}
               loading={claimButtonLoading}
               style={{
@@ -154,7 +154,7 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
             {/* on click deposit open modal */}
             <Button
               type="primary"
-              disabled={isLoading || !userAddress}
+              disabled={isLoading}
               onClick={() => setModalType("Deposit")}
               style={{
                 marginLeft: width < 650 ? "0px" : "10px",
@@ -167,7 +167,7 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
             {/* on click withdraw open modal */}
             <Button
               type="primary"
-              disabled={isLoading || !userAddress}
+              disabled={isLoading}
               onClick={() => setModalType("Withdraw")}
               style={{
                 marginLeft: width < 650 ? "0px" : "10px",

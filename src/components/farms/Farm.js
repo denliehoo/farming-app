@@ -2,7 +2,7 @@ import classes from "./Farm.module.css";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import FarmItem from "./FarmItem";
-import { Button, Col, Row, notification } from "antd";
+import { Col, Row, notification } from "antd";
 import LpToken from "../.././truffle_abis/LpToken.json";
 import FarmToken from "../.././truffle_abis/FarmToken.json";
 import { stringWeiToETH } from "../../utils/format";
@@ -127,6 +127,7 @@ const Farm = ({ props, web3, masterchef, address: userAddress }) => {
                 userAddress={userAddress}
                 showNotificationHandler={showNotificationHandler}
                 refreshBalances={() => setIsRefresh(!isRefresh)}
+                isLoading={isLoading}
               />
             </div>
           ))}
