@@ -1,5 +1,6 @@
 # farming-app
-A Farming dApp where users can earn FARM tokens by depositing LPTOKENS. Smart Contract is built on solidity and frontend is using React. 
+A Farming dApp where users can earn FARM tokens by depositing LPTOKENS. Smart Contract is built using solidity and frontend is using React. 
+Application has been deployed on: https://farming-app-36a08.web.app/
 
 
 ## Contract Overview
