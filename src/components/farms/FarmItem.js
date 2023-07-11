@@ -1,18 +1,17 @@
-// import classes from "./FarmItem.module.css";
-import { Button, Row, Col } from "antd";
-import { useState } from "react";
-import { stringWeiToETH } from "../../utils/format";
-import DepositOrWithdrawModal from "./DepositOrWithdrawModal";
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { Button, Row, Col } from 'antd'
+import { useState } from 'react'
+import { stringWeiToETH } from '../../utils/format'
+import DepositOrWithdrawModal from './DepositOrWithdrawModal'
+import { useWindowSize } from '../../hooks/useWindowSize'
 
 import {
   LoadingOutlined,
   CheckCircleOutlined,
-  ScanOutlined,
-} from "@ant-design/icons";
-import ConnectWalletPopup from "../shared/ConnectWalletPopUp";
-import { connect } from "react-redux";
-import { attemptToConnectWallet } from "../../reducers/connectWalletReducer";
+  ExportOutlined,
+} from '@ant-design/icons'
+import ConnectWalletPopup from '../shared/ConnectWalletPopUp'
+import { connect } from 'react-redux'
+import { attemptToConnectWallet } from '../../reducers/connectWalletReducer'
 
 const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
   const {
@@ -24,7 +23,7 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
     balance,
     rewards,
     deposit,
-  } = props.farmDetails;
+  } = props.farmDetails
   const {
     web3,
     masterchef,
@@ -32,63 +31,63 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
     isLoading,
     showNotificationHandler,
     refreshBalances,
-  } = props;
-  const [modalType, setModalType] = useState("");
-  const [claimButtonLoading, setClaimButtonLoading] = useState(false);
-  const { width } = useWindowSize();
+  } = props
+  const [modalType, setModalType] = useState('')
+  const [claimButtonLoading, setClaimButtonLoading] = useState(false)
+  const { width } = useWindowSize()
 
   // break point 640px
   const showPendingNotification = (type) => {
     showNotificationHandler(
       `Your ${type} has been submitted`,
-      "Please wait for transaction to be mined",
+      'Please wait for transaction to be mined',
       <LoadingOutlined />,
-      "topRight",
-      15
-    );
-  };
+      'topRight',
+      15,
+    )
+  }
   const showSuccessNotification = (type, amount, hash, symbol) => {
     showNotificationHandler(
-      "Success",
+      'Success',
       <span>
-        Your {type} of {amount} {symbol} is successful
+        Your {type} of {amount} {symbol} is successful{' '}
         <a href={`https://goerli.etherscan.io/tx/${hash}`} target="_blank">
-          <ScanOutlined />
+          <ExportOutlined />
         </a>
       </span>,
       <CheckCircleOutlined />,
-      "topRight",
-      15
-    );
-  };
+      'topRight',
+      15,
+    )
+  }
 
   const onClaimHandler = async () => {
-    setClaimButtonLoading(true);
+    setClaimButtonLoading(true)
     try {
       const claimRewards = await masterchef.methods
-        .withdraw(poolIndex, "0") // withdraw and set amount to 0 to claim
+        .withdraw(poolIndex, '0') // withdraw and set amount to 0 to claim
         .send({ from: userAddress })
-        .on("transactionHash", (hash) => {
-          showPendingNotification("claim");
-        });
+        .on('transactionHash', (hash) => {
+          showPendingNotification('claim')
+        })
       const receipt = await web3.eth.getTransactionReceipt(
-        claimRewards.transactionHash
-      );
+        claimRewards.transactionHash,
+      )
       showSuccessNotification(
-        "claim",
+        'claim',
         stringWeiToETH(rewards),
         receipt.transactionHash,
-        "FARM"
-      );
-      refreshBalances();
-      setClaimButtonLoading(false);
+        'FARM',
+      )
+      refreshBalances()
+      setClaimButtonLoading(false)
     } catch {
-      setClaimButtonLoading(false);
+      setClaimButtonLoading(false)
     }
-  };
+  }
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: '100%' }}>
       <Row span={24}>
         <b>
           {name} ({symbol})
@@ -101,51 +100,45 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
             <Col span={8}>Your Rewards</Col>
             <Col span={8}>Your Balance</Col>
           </Row>
-          <Row span={24}>
-            <Col span={8} style={{ color: "#ffffff" }}>
-              {deposit ? stringWeiToETH(deposit) : 0}
-            </Col>
-            <Col span={8} style={{ color: "#ffffff" }}>
-              {rewards ? stringWeiToETH(rewards) : 0}
-            </Col>
-            <Col span={8} style={{ color: "#ffffff" }}>
-              {balance ? stringWeiToETH(balance) : 0}
-            </Col>
+          <Row span={24} className="white-color">
+            <Col span={8}>{deposit ? stringWeiToETH(deposit) : 0}</Col>
+            <Col span={8}>{rewards ? stringWeiToETH(rewards) : 0}</Col>
+            <Col span={8}>{balance ? stringWeiToETH(balance) : 0}</Col>
           </Row>
         </div>
       ) : (
         <div>
           <Row span={24}>
             Your Deposits:
-            <span style={{ color: "#ffffff" }}>
+            <span className="white-color">
               {deposit ? stringWeiToETH(deposit) : 0}
             </span>
           </Row>
           <Row span={24}>
             Your Rewards:
-            <span style={{ color: "#ffffff" }}>
+            <span className="white-color">
               {rewards ? stringWeiToETH(rewards) : 0}
             </span>
           </Row>
           <Row span={24}>
             Your Balance:
-            <span style={{ color: "#ffffff" }}>
+            <span className="white-color">
               {balance ? stringWeiToETH(balance) : 0}
             </span>
           </Row>
         </div>
       )}
-      <Row justify="end" style={{ marginTop: "10px" }}>
+      <Row justify="end" style={{ marginTop: '10px' }}>
         {userAddress ? (
           <div>
             <Button
               type="primary"
-              disabled={isLoading || rewards === "0"}
+              disabled={isLoading || rewards === '0'}
               onClick={onClaimHandler}
               loading={claimButtonLoading}
               style={{
-                marginLeft: width < 650 ? "0px" : "10px",
-                marginBottom: width < 650 ? "5px" : "none",
+                marginLeft: width < 650 ? '0px' : '10px',
+                marginBottom: width < 650 ? '5px' : 'none',
               }}
               block={width < 650}
             >
@@ -155,10 +148,10 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
             <Button
               type="primary"
               disabled={isLoading}
-              onClick={() => setModalType("Deposit")}
+              onClick={() => setModalType('Deposit')}
               style={{
-                marginLeft: width < 650 ? "0px" : "10px",
-                marginBottom: width < 650 ? "5px" : "none",
+                marginLeft: width < 650 ? '0px' : '10px',
+                marginBottom: width < 650 ? '5px' : 'none',
               }}
               block={width < 650}
             >
@@ -168,10 +161,10 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
             <Button
               type="primary"
               disabled={isLoading}
-              onClick={() => setModalType("Withdraw")}
+              onClick={() => setModalType('Withdraw')}
               style={{
-                marginLeft: width < 650 ? "0px" : "10px",
-                marginBottom: width < 650 ? "5px" : "none",
+                marginLeft: width < 650 ? '0px' : '10px',
+                marginBottom: width < 650 ? '5px' : 'none',
               }}
               block={width < 650}
             >
@@ -181,7 +174,7 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
         ) : (
           <Button type="primary" onClick={() => attemptToConnectWallet(chain)}>
             {window.ethereum ? (
-              "Connect Wallet"
+              'Connect Wallet'
             ) : (
               <ConnectWalletPopup placement="top" />
             )}
@@ -192,7 +185,7 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
       {modalType && (
         <DepositOrWithdrawModal
           modalType={modalType}
-          closeModal={() => setModalType("")}
+          closeModal={() => setModalType('')}
           farmDetails={props.farmDetails}
           web3={web3}
           masterchef={masterchef}
@@ -203,15 +196,15 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 const mapStateToProps = ({ connectWalletReducer }, ownProps) => ({
   props: ownProps,
   chain: connectWalletReducer.chain,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   attemptToConnectWallet: (chain) => dispatch(attemptToConnectWallet(chain)),
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(FarmItem);
+export default connect(mapStateToProps, mapDispatchToProps)(FarmItem)

@@ -1,28 +1,47 @@
 .container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.headerText {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.refreshBalance {
+  cursor: pointer;
+}
+.refreshBalance:hover {
+  color: #0077b6;
 }
 .card {
-    --angle: 0deg;
-    width: 50%;
-    border: 3px solid;
-    padding: 20px;
-    margin-bottom: 50px;
-    border-image: conic-gradient(from var(--angle), #00b4d8, rgb(107, 107, 37),#0f118d, skyblue) 1 ;    
-    animation: 5s rotate linear infinite;
+  --angle: 0deg;
+  width: 50%;
+  border: 3px solid;
+  padding: 20px;
+  margin-bottom: 50px;
+  border-image: conic-gradient(
+      from var(--angle),
+      #00b4d8,
+      rgb(107, 107, 37),
+      #0f118d,
+      skyblue
+    )
+    1;
+  animation: 5s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
   }
-  
-  @keyframes rotate {
-    to {
-      --angle: 360deg;
-    }
-  }
-  
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-  
-  
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
