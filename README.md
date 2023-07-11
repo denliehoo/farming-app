@@ -9,9 +9,9 @@ Application has been deployed on: https://farming-app-36a08.web.app/
 ## For testing of smart contracts locally
 - Ensure ganache-cli and web3 is installed globally
 - run ganache-cli in terminal to start up local blockchain
-- run truffle test in terminal to run tests
+- run truffle test in separate terminal to run tests
 
-## For Dev Testing in ganache when want to connect to metamask [Warning: Do not use for anything else]:
+## For Dev Testing of frontend using ganache blockchain [Warning: Do not use mneomonic for anything else]:
 - ensure settings in connectwalletreducer is set
 - ganache-cli --mnemonic "tray trip forward glow debris monitor target wool island demand disorder adapt"
 - truffle migrate --reset
