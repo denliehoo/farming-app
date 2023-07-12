@@ -47,7 +47,7 @@ const NavBar = ({
   }, []);
 
   useEffect(() => {
-    width > 500 && closeDrawer();
+    width > 520 && closeDrawer();
   }, [width]);
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const NavBar = ({
       </div>
 
       <div className={classes.rightItems}>
-        {width < 500 ? (
+        {width < 520 ? (
           <>
             <div className={classes.hamburgerMenu} onClick={openDrawer}>
               <MenuOutlined />
