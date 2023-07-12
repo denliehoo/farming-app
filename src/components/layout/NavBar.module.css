@@ -34,7 +34,7 @@
   cursor: pointer;
 }
 
-@media (min-width: 520) {
+@media (min-width: 520px) {
   .antdMenu {
     width: 100%;
     display: flex;
