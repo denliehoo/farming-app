@@ -1,140 +1,136 @@
-import Web3 from "web3";
-import FarmMasterChef from "../truffle_abis/FarmMasterChef.json";
+import Web3 from 'web3'
+import FarmMasterChef from '../truffle_abis/FarmMasterChef.json'
 
+const env = process.env.REACT_APP_ENV
 const chainIds = {
-  goerli: "0x5",
-  // goerli: "0x539", // temporarily change to ganache
-};
+  goerli: env === 'PROD' ? '0x5' : '0x539',
+}
 
 const initialState = {
-  address: "",
+  address: '',
   walletConnected: false,
-  chain: "goerli",
+  chain: 'goerli',
   masterchef: {},
   web3: {},
-};
+}
 
 const connectWalletAction = (payload) => ({
-  type: "CONNECTWALLET",
+  type: 'CONNECTWALLET',
   payload,
-});
+})
 
 const changeWalletAction = (payload) => ({
-  type: "CHANGEWALLET",
+  type: 'CHANGEWALLET',
   payload,
-});
+})
 
 const disconnectWalletAction = () => ({
-  type: "DISCONNECTWALLET",
-});
+  type: 'DISCONNECTWALLET',
+})
 
 const connectSmartContractAction = (payload) => ({
-  type: "CONNECTSMARTCONTRACT",
+  type: 'CONNECTSMARTCONTRACT',
   payload,
-});
+})
 
 const changeChainConnectWalletReducer = (payload) => ({
-  type: "CHANGECHAIN",
+  type: 'CHANGECHAIN',
   payload,
-});
+})
 
 const attemptToConnectWallet = (chain) => {
   return async (dispatch) => {
     try {
-      await window.ethereum.enable();
-      const web3 = new Web3(window.ethereum);
-      const accounts = await web3.eth.getAccounts();
-      const networkId = await web3.eth.net.getId(); // int type
+      await window.ethereum.enable()
+      const web3 = new Web3(window.ethereum)
+      const accounts = await web3.eth.getAccounts()
+      const networkId = await web3.eth.net.getId() // int type
 
-      let onCorrectChain = true;
+      let onCorrectChain = true
       // if network id not equal to the goerli, attempt to change chain
       if (web3.utils.toHex(networkId) !== chainIds[chain]) {
         // attempt to connect
-        onCorrectChain = await attemptToChangeChain(chain);
+        onCorrectChain = await attemptToChangeChain(chain)
         if (!onCorrectChain) {
-          dispatch(disconnectWalletAction());
-          return false;
+          dispatch(disconnectWalletAction())
+          return false
         }
       }
-      await dispatch(connectWalletAction({ address: accounts[0], web3: web3 }));
+      await dispatch(connectWalletAction({ address: accounts[0], web3: web3 }))
 
-      /*
-      // ****** DO NOT DELETE THIS COMMENT
-      // This is for if smart contract deployed through truffle
+      let masterchef
       // load the FarmMasterChef Contract
-      const masterchefData = FarmMasterChef.networks[networkId];
-      if (masterchefData) {
-        const masterchef = new web3.eth.Contract(
-          FarmMasterChef.abi,
-          masterchefData.address
-        );
+      if (env === 'TEST') {
+        // This is for if smart contract deployed through ganache
+        const masterchefData = FarmMasterChef.networks[networkId]
+        if (masterchefData) {
+          masterchef = new web3.eth.Contract(
+            FarmMasterChef.abi,
+            masterchefData.address,
+          )
+        }
+      } else if (env === 'PROD') {
+        // This is for if smart contract already deployed
+        if (onCorrectChain) {
+          masterchef = new web3.eth.Contract(
+            FarmMasterChef.abi,
+            '0x3eBDF96C2932BAe3c27d617143B3c5675599cd54', // farm masterchef address here
+          )
+        }
 
-        // ******
-      */
-
-      // ****** DO NOT DELETE THIS COMMENT
-      // This is for if smart contract deployed through remix
-      if (onCorrectChain) {
-        const masterchef = new web3.eth.Contract(
-          FarmMasterChef.abi,
-          "0x3eBDF96C2932BAe3c27d617143B3c5675599cd54" // farm masterchef address here
-        );
-
-        // ******
-
-        dispatch(connectSmartContractAction(masterchef));
-        return true;
+        dispatch(connectSmartContractAction(masterchef))
+        return true
       } else {
         // if no network...
-        console.log("Error: Wrong chain or no network detected");
-        dispatch(disconnectWalletAction());
-        return false;
+        console.log('Error: Wrong chain or no network detected')
+        dispatch(disconnectWalletAction())
+        return false
       }
     } catch (error) {
-      console.log(error);
-      dispatch(disconnectWalletAction());
-      return false;
+      console.log(error)
+      dispatch(disconnectWalletAction())
+      return false
     }
 
     ///
-  };
-};
+  }
+}
 
 const attemptToChangeChain = async (chain) => {
   // try to switch, if can't switch (either because user reject or dont have the chain id), then will give error
   try {
     await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
+      method: 'wallet_switchEthereumChain',
       params: [{ chainId: chainIds[chain] }],
-    });
-    return true;
+    })
+    return true
   } catch {
-    console.log("User rejected");
-    return false;
+    console.log('User rejected')
+    return false
   }
-};
+}
 
 const connectWalletReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "CONNECTWALLET":
+    case 'CONNECTWALLET':
       return {
         ...state,
         address: action.payload.address,
         web3: action.payload.web3,
         walletConnected: true,
-      };
-    case "CHANGEWALLET":
-      return { ...state, address: action.payload, walletConnected: true };
-    case "DISCONNECTWALLET":
-      return { ...state, address: "", walletConnected: false, masterchef: {} };
-    case "CONNECTSMARTCONTRACT":
-      return { ...state, masterchef: action.payload };
-    case "CHANGECHAIN":
-      return { ...state, chain: action.payload };
+      }
+    case 'CHANGEWALLET':
+      return { ...state, address: action.payload, walletConnected: true }
+    case 'DISCONNECTWALLET':
+      return { ...state, address: '', walletConnected: false, masterchef: {} }
+    case 'CONNECTSMARTCONTRACT':
+      return { ...state, masterchef: action.payload }
+    case 'CHANGECHAIN':
+      return { ...state, chain: action.payload }
     default:
-      return state;
+      return state
   }
-};
+}
 
 export {
   connectWalletReducer,
@@ -144,4 +140,4 @@ export {
   connectSmartContractAction,
   attemptToConnectWallet,
   changeChainConnectWalletReducer,
-};
+}

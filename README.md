@@ -6,6 +6,10 @@ Application has been deployed on: https://farming-app-36a08.web.app/
 ## Contract Overview
 ![Contract Overview](./src/assets/images/ReadMe/ContractsOverview.jpg)
 
+## To start dApp
+npm install
+npm start
+
 ## For testing of smart contracts locally
 - Ensure ganache-cli and web3 is installed globally
 - run ganache-cli in terminal to start up local blockchain
@@ -15,7 +19,7 @@ Application has been deployed on: https://farming-app-36a08.web.app/
 - ensure settings in connectwalletreducer is set
 - ganache-cli --mnemonic "tray trip forward glow debris monitor target wool island demand disorder adapt"
 - truffle migrate --reset
-- npm start
+- npm run start:test
 - Note: If face nonce errors during testing, go to settings in metamask for the account => Advanced => Clear activity tab data
 
 ## Contract Locations

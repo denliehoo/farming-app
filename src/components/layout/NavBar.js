@@ -1,18 +1,18 @@
-import classes from "./NavBar.module.css";
-import { Menu, Drawer } from "antd";
-import { connect } from "react-redux";
+import classes from './NavBar.module.css'
+import { Menu, Drawer } from 'antd'
+import { connect } from 'react-redux'
 import {
   changeWalletAction,
   disconnectWalletAction,
   attemptToConnectWallet,
-} from "../../reducers/connectWalletReducer";
-import { useEffect, useRef, useState } from "react";
-import goerliLogo from "../../assets/images/goerliLogo.svg";
-import farmLogo from "../../assets/images/farmlogo.png";
-import IconComponent from "../shared/IconComponent";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { MenuOutlined, CloseOutlined, WalletOutlined } from "@ant-design/icons";
-import ConnectWalletPopup from "../shared/ConnectWalletPopUp";
+} from '../../reducers/connectWalletReducer'
+import { useEffect, useRef, useState } from 'react'
+import goerliLogo from '../../assets/images/goerliLogo.svg'
+import farmLogo from '../../assets/images/farmLogo.png'
+import IconComponent from '../shared/IconComponent'
+import { useWindowSize } from '../../hooks/useWindowSize'
+import { MenuOutlined, CloseOutlined, WalletOutlined } from '@ant-design/icons'
+import ConnectWalletPopup from '../shared/ConnectWalletPopUp'
 
 const NavBar = ({
   changeWalletAction,
@@ -22,87 +22,87 @@ const NavBar = ({
   walletConnected,
   chain,
 }) => {
-  const [showDrawer, setShowDrawer] = useState(false);
-  const [userClickNetwork, setIsUserClickNetwork] = useState(false);
-  const { width } = useWindowSize();
-  const userClickNetworkRef = useRef(userClickNetwork);
+  const [showDrawer, setShowDrawer] = useState(false)
+  const [userClickNetwork, setIsUserClickNetwork] = useState(false)
+  const { width } = useWindowSize()
+  const userClickNetworkRef = useRef(userClickNetwork)
 
   const openDrawer = () => {
-    setShowDrawer(true);
-  };
+    setShowDrawer(true)
+  }
   const closeDrawer = () => {
-    setShowDrawer(false);
-  };
+    setShowDrawer(false)
+  }
 
   useEffect(() => {
     const checkMetaMaskConnection = async () => {
       if (window.ethereum) {
-        await attemptToConnectWallet(chain);
+        await attemptToConnectWallet(chain)
       } else {
-        console.log("MetaMask is not installed");
+        console.log('MetaMask is not installed')
       }
-    };
+    }
 
-    checkMetaMaskConnection();
-  }, []);
-
-  useEffect(() => {
-    width > 520 && closeDrawer();
-  }, [width]);
+    checkMetaMaskConnection()
+  }, [])
 
   useEffect(() => {
-    userClickNetworkRef.current = userClickNetwork;
-  }, [userClickNetwork]);
+    width > 520 && closeDrawer()
+  }, [width])
+
+  useEffect(() => {
+    userClickNetworkRef.current = userClickNetwork
+  }, [userClickNetwork])
 
   useEffect(() => {
     if (walletConnected && window.ethereum) {
-      window.ethereum.on("accountsChanged", (accounts) => {
-        changeWalletAction(accounts[0]);
-      });
-      window.ethereum.on("chainChanged", async (chainId) => {
+      window.ethereum.on('accountsChanged', (accounts) => {
+        changeWalletAction(accounts[0])
+      })
+      window.ethereum.on('chainChanged', async (chainId) => {
         if (!userClickNetworkRef.current) {
-          disconnectWalletAction();
-          await attemptToConnectWallet(chain);
-          setIsUserClickNetwork(false);
+          disconnectWalletAction()
+          await attemptToConnectWallet(chain)
+          setIsUserClickNetwork(false)
         }
-      });
+      })
     } else {
     }
-  }, [walletConnected, userClickNetwork]);
+  }, [walletConnected, userClickNetwork])
 
   const connectWalletHandler = async () => {
     if (!walletConnected) {
-      await attemptToConnectWallet(chain);
+      await attemptToConnectWallet(chain)
     }
-  };
+  }
 
   const addressOrConnectButton = (
     <span>
       {address ? (
-        <span>{address.substring(0, 4) + "..." + address.slice(-4)}</span>
+        <span>{address.substring(0, 4) + '...' + address.slice(-4)}</span>
       ) : window.ethereum ? (
         <span onClick={connectWalletHandler}>
-          {" "}
+          {' '}
           <WalletOutlined /> Connect Wallet
         </span>
       ) : (
         <ConnectWalletPopup />
       )}
     </span>
-  );
+  )
   const walletConnectPortion =
     walletConnected && address
       ? {
           label: addressOrConnectButton,
-          key: "connectWallet",
+          key: 'connectWallet',
           children: [
             {
               label: <div onClick={disconnectWalletAction}>Disconnect</div>,
-              key: "disconnectWallet",
+              key: 'disconnectWallet',
             },
           ],
         }
-      : { label: addressOrConnectButton, key: "connectWallet" };
+      : { label: addressOrConnectButton, key: 'connectWallet' }
 
   const rightItems = [
     {
@@ -111,10 +111,10 @@ const NavBar = ({
           <IconComponent imgUrl={goerliLogo} /> Goerli
         </span>
       ),
-      key: "networkName",
+      key: 'networkName',
     },
     walletConnectPortion,
-  ];
+  ]
   return (
     <nav className={classes.navBar}>
       <div className={classes.leftItem}>
@@ -134,11 +134,11 @@ const NavBar = ({
               onClose={closeDrawer}
               visible={showDrawer}
               width={width}
-              closeIcon={<CloseOutlined style={{ color: "#00b4d8" }} />}
+              closeIcon={<CloseOutlined style={{ color: '#00b4d8' }} />}
             >
               <Menu
                 items={rightItems}
-                mode={"inline"}
+                mode={'inline'}
                 className={classes.antdMenu}
               />
             </Drawer>
@@ -147,26 +147,26 @@ const NavBar = ({
           <>
             <Menu
               items={rightItems}
-              mode={"horizontal"}
+              mode={'horizontal'}
               className={classes.antdMenu}
             />
           </>
         )}
       </div>
     </nav>
-  );
-};
+  )
+}
 
 const mapStateToProps = ({ connectWalletReducer }) => ({
   address: connectWalletReducer.address,
   walletConnected: connectWalletReducer.walletConnected,
   chain: connectWalletReducer.chain,
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   changeWalletAction: (payload) => dispatch(changeWalletAction(payload)),
   disconnectWalletAction: () => dispatch(disconnectWalletAction()),
   attemptToConnectWallet: (chain) => dispatch(attemptToConnectWallet(chain)),
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
