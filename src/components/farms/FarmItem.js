@@ -109,20 +109,20 @@ const FarmItem = ({ props, attemptToConnectWallet, chain }) => {
       ) : (
         <div>
           <Row span={24}>
-            <Col span={width > 460 ? "none" : 24}>Your Deposits:</Col>
-            <Col span={width > 460 ? "none" : 24} className="white-color ml-5">
+            <Col span={width > 480 ? "none" : 24}>Your Deposits:</Col>
+            <Col span={width > 480 ? "none" : 24} className="white-color ml-5">
               {deposit ? stringWeiToETH(deposit) : 0}
             </Col>
           </Row>
           <Row span={24}>
-            <Col span={width > 460 ? "none" : 24}>Your Rewards:</Col>
-            <Col span={width > 460 ? "none" : 24} className="white-color ml-5">
+            <Col span={width > 480 ? "none" : 24}>Your Rewards:</Col>
+            <Col span={width > 480 ? "none" : 24} className="white-color ml-5">
               {rewards ? stringWeiToETH(rewards) : 0}
             </Col>
           </Row>
           <Row span={24}>
-            <Col span={width > 460 ? "none" : 24}>Your Balance:</Col>
-            <Col span={width > 460 ? "none" : 24} className="white-color ml-5">
+            <Col span={width > 480 ? "none" : 24}>Your Balance:</Col>
+            <Col span={width > 480 ? "none" : 24} className="white-color ml-5">
               {balance ? stringWeiToETH(balance) : 0}
             </Col>
           </Row>
